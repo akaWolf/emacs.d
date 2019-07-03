@@ -1,0 +1,960 @@
+#+TITLE: Emacs configuration file
+#+AUTHOR: Artjom Vejsel
+#+BABEL: :cache yes
+#+PROPERTY: header-args :tangle yes
+#+STARTUP: overview
+
+* Credits
+
+Inspired by [[https://github.com/vyorkin/emacs.d][vyorkin's]] setup.
+
+* Setup
+
+- Symlink =init.org= to =~/.emacs.d/init.org=
+- Symlink =init.el= to =~/.emacs.d/init.el=
+
+#+BEGIN_SRC sh :tangle no
+ln -sf $(pwd)/init.org ~/.emacs.d/init.org
+ln -sf $(pwd)/init.el ~/.emacs.d/init.el
+#+END_SRC
+
+On the first run Emacs will install some packages. It's best to restart Emacs after that process is done for the first time.
+
+There is no reason to track the =init.el= that is generated; by running the following command =git= will not bother tracking it:
+
+#+BEGIN_SRC sh :tangle no
+git update-index --assume-unchanged init.el
+#+END_SRC
+
+If one wishes to make changes to the repo-version of =init.el= start tracking again with:
+
+#+BEGIN_SRC sh :tangle no
+git update-index --no-assume-unchanged init.el
+#+END_SRC
+
+When this configuration is loaded for the first time, the =init.el= is the file that is loaded. It looks like this:
+
+#+BEGIN_SRC emacs-lisp :tangle no
+;; We can't tangle without org!
+(require 'org)
+;; Open the configuration
+(find-file (concat user-emacs-directory "init.org"))
+;; tangle it
+(org-babel-tangle)
+;; load it
+(load-file (concat user-emacs-directory "init.el"))
+;; finally byte-compile it
+(byte-compile-file (concat user-emacs-directory "init.el"))
+#+END_SRC
+
+* Config
+
+[[https://www.emacswiki.org/emacs/LexicalBinding][Lexical binding]] for the init-file is needed, it can be specified in the header.
+This is the first line of the actual configuration.
+
+#+BEGIN_SRC emacs-lisp
+;;; -*- lexical-binding: t -*-
+#+END_SRC
+
+Tangle and compile this file on save automatically:
+
+#+BEGIN_SRC emacs-lisp
+(defun tangle-init ()
+  "If the current buffer is 'init.org' the code-blocks are
+tangled, and the tangled file is compiled."
+  (when (equal (buffer-file-name)
+               (file-truename (concat user-emacs-directory "init.org")))
+    ;; Avoid running hooks when tangling.
+    (let ((prog-mode-hook nil))
+      (org-babel-tangle)
+      (byte-compile-file (concat user-emacs-directory "init.el")))))
+
+(add-hook 'after-save-hook 'tangle-init)
+#+END_SRC
+
+** Use package
+
+Initialize package and add package archives.
+
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+#+END_SRC
+
+Set ~package-enable-at-startup~ to ~nil~ for slightly faster startup.
+See [[https://www.reddit.com/r/emacs/comments/1rdstn/set_packageenableatstartup_to_nil_for_slightly/][this post on Reddit]].
+
+#+BEGIN_SRC emacs-lisp
+(setq package-enable-at-startup nil)
+#+END_SRC
+
+Use MELPA as shown [[https://melpa.org/#/getting-started][here]].
+
+#+BEGIN_SRC emacs-lisp
+(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+    (proto (if no-ssl "http" "https")))
+    ;; Comment/uncomment these two lines to disable/enable MELPA and MELPA Stable as desired
+    (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+    ;; (add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+    (when (< emacs-major-version 24)
+      ;; For important compatibility libraries like cl-lib
+      (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
+#+END_SRC
+
+It is ok to use both ~package-initialize~ and ~use-package~ for a well behaved
+package: ~package-initialize~ will not load the whole package, but only autoload
+functions selected by the package author.
+
+#+BEGIN_SRC emacs-lisp
+(package-initialize)
+#+END_SRC
+
+Install [[https://github.com/jwiegley/use-package][use-package]].
+
+Install missing packages automatically if not already present on the system and
+be less verbose.
+
+#+BEGIN_SRC emacs-lisp
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile (require 'use-package))
+
+(setq
+ use-package-always-ensure t
+ use-package-verbose nil)
+#+END_SRC
+
+** Warnings
+
+Decrease the =obsolete= warnings annoyance level.
+
+#+BEGIN_SRC emacs-lisp
+(setq byte-compile-warnings '(not obsolete))
+#+END_SRC
+
+This helps to get rid of =functions might not be defined at runtime= warnings.
+See [[https://github.com/jwiegley/use-package/issues/590][this issue]] for details.
+
+** Defaults
+*** Backups & lock files
+
+Don't create lock files.
+
+#+BEGIN_SRC emacs-lisp
+(setq create-lockfiles nil)
+#+END_SRC
+
+I don't care about auto save and backup files.
+Also I don't like distracting alarms.
+
+#+BEGIN_SRC emacs-lisp
+(setq
+ make-backup-files nil        ; disable backup files
+ auto-save-list-file-name nil ; disable .saves files
+ auto-save-default nil        ; disable auto saving
+ ring-bell-function 'ignore)  ; turn off alarms completely
+#+END_SRC
+
+*** Misc
+
+Use =y/n= instead of =yes/no=.
+
+#+BEGIN_SRC emacs-lisp
+(fset 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+Don't prompt for non existent name when creating new buffers.
+
+#+BEGIN_SRC emacs-lisp
+(setq-default confirm-nonexistent-file-or-buffer t)
+#+END_SRC
+
+Enable =recentf-mode= and remember a lot of files.
+
+#+BEGIN_SRC emacs-lisp
+(setq
+ recentf-auto-cleanup 'never
+ recentf-max-menu-items 0
+ recentf-max-saved-items 300
+ recentf-filename-handlers '(file-truename abbreviate-file-name))
+
+(recentf-mode 1)
+#+END_SRC
+
+Automatically save place in each file.
+
+#+BEGIN_SRC emacs-lisp
+(setq
+ save-place-forget-unreadable-files t
+ save-place-limit 200)
+
+(save-place-mode 1)
+#+END_SRC
+
+** Location
+
+Set the location name and coordinates.
+
+#+BEGIN_SRC emacs-lisp
+(setq
+ calendar-location-name "Moscow, RU"
+ calendar-latitude 55.76
+ calendar-longitude 37.78)
+#+END_SRC
+
+** Core
+*** Utils
+
+Utility functions.
+
+#+BEGIN_SRC emacs-lisp
+(defun my/emacs-path (path)
+  "Expands `path` with Emacs home directory."
+  (expand-file-name path user-emacs-directory))
+
+(defun my/tmp-path (path)
+  "Expand `path` with Emacs temporary directory."
+  (my/emacs-path (format "tmp/%s" path)))
+
+(defun my/lisp-path (path)
+  "Expand `path` with Emacs `/lisp` directory."
+  (my/emacs-path (format "lisp/%s" path)))
+#+END_SRC
+
+*** Builtin
+**** Files
+
+On save/write file:
+- Automatically delete trailing whitespace.
+- Silently put a newline at the end of file if there isn't already one there.
+
+#+BEGIN_SRC emacs-lisp
+(use-package files
+ :ensure nil
+ :commands
+ (generate-new-buffer
+  executable-find
+  file-name-base
+  file-name-extension)
+ :custom
+ (require-final-newline t)
+ :hook
+ (before-save . delete-trailing-whitespace))
+#+END_SRC
+
+**** Reverting
+
+**** Uniquify
+
+**** Frame
+
+- Disable blinking cursor.
+- Disable suspending on =C-z=.
+
+#+BEGIN_SRC emacs-lisp
+(use-package frame
+ :ensure nil
+ :config
+ (blink-cursor-mode 0)
+ :bind
+ ("C-z" . nil))
+#+END_SRC
+
+**** Delsel
+
+**** Simple
+
+**** Pixel scroll
+
+**** Prog mode
+
+**** IBuffer
+
+**** Mule
+
+**** ETags
+
+**** Man
+
+**** Calendar
+
+**** Face remap
+
+**** CC mode
+
+** UI
+*** Basics.
+
+*** Scroll
+
+*** UI elements
+
+Hide toolbar and scrollbars.
+
+#+BEGIN_SRC emacs-lisp
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(when (fboundp 'horizontal-scroll-bar-mode)
+  (horizontal-scroll-bar-mode -1))
+#+END_SRC
+
+I generally prefer to hide the menu bar, but doing this on OS X simply makes it
+update unreliably in GUI frames, so we make an exception.
+
+#+BEGIN_SRC emacs-lisp
+(if (eq system-type 'darwin)
+    (add-hook 'after-make-frame-functions
+              (lambda (frame)
+                (set-frame-parameter frame 'menu-bar-lines
+                                     (if (display-graphic-p frame) 1 0))))
+  (when (fboundp 'menu-bar-mode)
+    (menu-bar-mode -1)))
+#+END_SRC
+
+*** Cursor
+
+*** Fringe
+
+*** Window-divider
+
+*** Line-spacing
+
+*** Startup
+
+Start maximized.
+
+#+BEGIN_SRC emacs-lisp
+(toggle-frame-maximized)
+#+END_SRC
+
+*** Mode-line
+
+*** Time
+
+** Editor
+*** Customizations
+
+I don't use the customizations UI. Lets keep those automated
+customizations in a [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][separate file]]. The ~'noerror~ argument passed to
+load prevents errors if the file doesn’t exist.
+
+#+BEGIN_SRC emacs-lisp
+(setq custom-file (my/emacs-path "custom.el"))
+(load custom-file 'noerror)
+#+END_SRC
+
+*** Basics
+
+*** Tabs & spaces
+
+*** Line wrapping
+
+** Benchmarking
+
+** Quelpa
+
+** Use-package plugins
+
+** Font
+*** Faces
+
+** Theme
+
+Use [[https://github.com/arcticicestudio/nord-emacs][Nord Emacs theme]].
+
+#+BEGIN_SRC emacs-lisp
+(use-package nord-theme
+  :config
+  (load-theme 'nord t))
+#+END_SRC
+
+** Key bindings
+
+** Behavior
+*** Trashing
+
+*** Automatic updates
+
+Automatically update Emacs packages. Useful if you're working in multiple
+machines and tend to forget to manually update packages from time to time.
+
+The main idea is that you set a desired periodicity for the updates, and when
+you start Emacs, the packages will be automatically updated if enough days have
+passed since the last update.
+
+See the [[https://github.com/rranelli/auto-package-update.el][package repo]] for more info.
+
+#+BEGIN_SRC emacs-lisp
+(use-package auto-package-update
+ :config
+ (setq
+  auto-package-update-delete-old-versions t ; Delete residual old version directory when updating
+  auto-package-update-interval 1)           ; Update packages every day
+ (auto-package-update-maybe)                ; Check for updates on startup
+ (auto-package-update-at-time "06:00"))     ; Update at =6:00=
+#+END_SRC
+
+*** Clipboard
+
+*** Copy as
+
+*** Extra whitespace trimming
+
+*** Aggressive indent
+
+*** Auto-save buffers
+
+*** Auto read-only
+
+*** Zoom
+
+*** Transparency
+
+*** Go to last change
+
+*** Fullframe
+
+*** Folding
+
+*** Which key
+
+*** Free keys
+
+*** Sudo edit
+
+*** Try
+
+*** Restart
+
+** Appearance
+*** Customization
+
+*** Page break lines
+
+Display ugly =^L= page breaks as tidy horizontal lines.
+
+#+BEGIN_SRC emacs-lisp
+(use-package page-break-lines
+ :init
+ (global-page-break-lines-mode 1)
+ :diminish page-break-lines-mode)
+#+END_SRC
+
+*** Rainbow delimiters
+
+*** Rainbow identifiers
+
+*** Rainbow mode
+
+*** Idle highlight mode
+
+*** Hl-todo
+
+*** Highlight indentation
+
+*** Highlight chars
+
+*** Highlight leading spaces
+
+*** VI Tilde fringe
+
+*** Info colors
+
+*** Fill column
+
+*** All the icons
+
+*** Emojify
+
+*** Mode line
+
+*** Beacon
+
+** Evil
+*** Main
+
+*** Evil collection
+
+*** Alignment
+
+*** Sentence navigation
+
+*** Multiple cursors
+
+*** Matchit
+
+*** Surround
+
+*** Args
+
+*** Embrace
+
+*** Visualstar
+
+*** Vimish fold
+
+*** Indent plus
+
+*** Commentary
+
+*** Exchange
+
+*** Numbers
+
+** Diff
+
+** Eldoc
+
+** Secrets
+
+** Bookmarks
+
+** Completion
+*** Company
+
+*** Company quickhelp
+
+*** Company FLX
+
+** Spellcheck
+
+** Flycheck
+
+** Flyspell
+
+** Compilation
+
+** Dictionary
+*** Powerthesaurus
+
+*** Define word
+
+** Dired
+*** Constants (file extensions)
+
+*** Dired
+
+*** Dired hide dotfiles
+
+*** Dired fl
+
+*** Dired rsync
+
+*** Dired launch
+
+*** Dired+
+
+*** Dired hacks.
+
+**** Prerequisites
+
+**** Filter
+
+**** Avfs
+
+**** Open
+
+**** Narrow
+
+*** Peep dired
+
+** Neotree
+
+*** Icons
+
+** Navigation
+*** Ace window
+
+*** Winner
+
+*** Expand region
+
+*** Ivy
+
+**** Rich
+
+**** Xref
+
+**** Flyspell correct
+
+**** Hydra
+
+*** IBuffer VC
+
+*** FZF
+
+*** Counsel
+
+*** Ace link
+
+*** Counsel etags
+
+*** Swiper
+
+*** Dumb jump
+
+*** Avy
+
+*** Avy zap
+
+*** Avy flycheck
+
+*** Tmux integration
+
+** Projectile
+*** Setup
+
+*** Counsel
+
+** Git
+*** With editor
+
+*** Magit
+
+*** Evil-Magit
+
+*** Magit todos
+
+*** Forge
+
+*** Git gutter
+
+*** Time machine
+
+*** Syntactic modes
+
+*** Magithub
+
+*** Gist
+
+** Shell
+*** Eshell
+
+*** EM-smart
+
+*** Esh help
+
+*** Esh autosuggest
+
+*** EShell toggle
+
+** Undo
+*** Propose
+
+*** Tree
+
+** SSH
+*** Config mode
+
+*** Tramp
+
+*** Counsel-tramp
+
+*** Docker-tramp
+
+*** Vagrant-tramp
+
+*** Kubernetes-tramp
+
+*** Blah
+
+** Smartparens
+*** Main
+
+*** Evil
+
+** Snippets
+*** Yasnippet
+
+** Org
+*** Main
+
+*** Evil
+
+*** Bullets
+
+** LSP
+*** Mode
+
+*** LSP UI
+
+*** Company LSP
+
+*** Treemacs
+
+** Languages
+*** Lisp
+
+*** Emacs Lisp
+**** Mode
+
+**** Refs
+
+**** Macrostep
+
+**** Highlight
+
+*** Haskell
+**** Hasklig (ligatures)
+
+**** Mode
+
+**** Hi2
+
+**** Hindent
+
+**** Ormolu
+
+**** Company-cabal
+
+**** Hasky-stack
+
+**** Hasky-extensions
+
+**** LSP
+
+*** PureScript
+**** Mode
+
+**** PSC IDE
+
+**** PSCI
+
+*** Idris
+
+*** ATS/ATS2
+
+*** Nix
+
+**** Helpers
+
+*** Ocaml
+
+**** Variables
+
+**** Utop
+
+**** Merlin
+
+**** Tuareg
+
+**** Indentation
+
+**** Dune
+
+**** Flycheck
+
+*** Coq
+
+*** Merlin eldoc
+
+*** Reason
+
+*** SML
+
+*** Scheme
+
+*** Racket
+
+*** Clojure
+
+*** Scala
+
+*** Kotlin
+
+*** Rust
+
+*** Erlang
+*** Elixir
+
+*** Prolog
+
+*** Dhall
+
+*** Terraform
+**** Mode
+
+**** Company
+
+*** SQL
+
+*** Json
+
+*** Yaml
+
+*** Markdown
+
+*** Emmet
+
+*** Tex
+
+*** Prolog
+
+*** Python
+
+*** Ruby
+
+*** PHP
+
+*** Java
+
+*** Kotlin
+
+*** Groovy
+
+*** Web
+**** Mode
+
+**** Company
+
+*** Styling
+**** CSS mode
+
+**** LSP-CSS
+
+**** SCSS mode
+
+*** Go
+
+*** TypeScript
+
+*** Flow
+
+*** JavaScript
+**** tern
+
+**** npm
+
+**** js2
+
+**** eslintd-fix
+
+**** xref-js2
+
+**** js2-refactor
+
+**** rjxs-mode
+
+**** TODO LSP
+
+**** prettier
+
+**** GraphQL
+
+**** company-tern
+
+*** Vue
+
+*** Elm
+
+*** Nginx
+
+*** D
+
+*** C/C++
+
+*** Objective C
+
+*** Matlab
+
+*** Octave
+
+*** Latex
+
+*** Toml
+
+*** Bison
+
+*** Pug
+
+*** Jade
+
+*** Lua
+
+*** Haml
+
+*** Slim
+
+*** Robots.txt
+
+*** Dotenv
+
+*** CSV
+
+*** Api blueprint
+
+*** NASM
+
+*** IASM
+
+*** BNF
+
+*** Ansible
+
+*** Arduino
+
+*** GLSL
+
+** GDB
+
+** DAP
+
+** HTTP
+
+** Docker
+
+** Kubernetes
+
+** Hydra
+*** Install
+
+*** Text scale
+
+*** Window management
+
+** Help
+
+** Infrastructure
+*** Net utils
+
+*** IX
+
+** Calendar
+
+** Email
+
+** Reading
+*** PDF
+
+*** Djvu
+
+** Translation
+
+** Search
+*** Engine mode
+
+*** Google this
+
+*** Stack exchange
+
+** Messaging
+*** Prerequisites
+
+*** Slack
+
+*** Telega
+
+** Pomodoro
+
+** Statistics
+*** Uptimes
+
+*** Keyfreq
+
+*** Wakatime
+
+** Delight
+
+** Diminish
