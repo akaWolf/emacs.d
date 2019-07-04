@@ -361,6 +361,25 @@ load prevents errors if the file doesn’t exist.
 ** Font
 *** Faces
 
+#+BEGIN_SRC emacs-lisp
+(use-package faces
+  :ensure nil
+  :custom
+  (face-font-family-alternatives
+   '(("Inconsolata LGC")))
+  :init
+  (set-face-attribute
+   'default nil
+   :family (caar face-font-family-alternatives)
+   :weight 'regular
+   :height 240
+   :width 'semi-condensed)
+  (set-fontset-font
+   "fontset-default"
+   'cyrillic
+   (font-spec :registry "iso10646-1" :script 'cyrillic)))
+#+END_SRC
+
 ** Theme
 
 Use [[https://github.com/arcticicestudio/nord-emacs][Nord Emacs theme]].
