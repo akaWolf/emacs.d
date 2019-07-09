@@ -138,6 +138,11 @@ Decrease the =obsolete= warnings annoyance level.
 This helps to get rid of =functions might not be defined at runtime= warnings.
 See [[https://github.com/jwiegley/use-package/issues/590][this issue]] for details.
 
+#+BEGIN_SRC emacs-lisp
+(eval-when-compile
+  (setq use-package-expand-minimally byte-compile-current-file))
+#+END_SRC
+
 ** Defaults
 *** Backups & lock files
 
