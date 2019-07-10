@@ -393,9 +393,63 @@ load prevents errors if the file doesn’t exist.
 
 *** Basics
 
+Some basic things.
+
+#+BEGIN_SRC emacs-lisp
+(setq
+ sentence-end-double-space nil  ; sentences should end in one space
+ initial-scratch-message nil    ; empty scratch buffer
+ enable-recursive-minibuffers t ; allow minibuffer commands in the minibuffer
+ echo-keystrokes 0.1            ; show keystrokes right away, don't show the message in the scratch buffer
+ ns-use-native-fullscreen nil   ; disable native fullscreen support
+)
+#+END_SRC
+
 *** Tabs & spaces
 
+- Allow to use tabs for indent
+- One tab is 4 spaces.
+
+#+BEGIN_SRC emacs-lisp
+(setq-default
+ indent-tabs-mode t
+ tab-width 4)
+#+END_SRC
+
+Display line and column numbers in the mode-line.
+
+#+BEGIN_SRC emacs-lisp
+(setq
+  line-number-mode t
+  column-number-mode t)
+#+END_SRC
+
 *** Line wrapping
+
+Long lines will show a continuation character in the right margin at the
+window’s edge to indicate that next line is the continuation of current.
+
+#+BEGIN_SRC emacs-lisp
+(setq-default truncate-lines nil)
+#+END_SRC
+
+Break line at =N= characters.
+
+#+BEGIN_SRC emacs-lisp
+(setq-default fill-column 80)
+#+END_SRC
+
+Enable automatic line breaking for all text mode buffers.
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+#+END_SRC
+
+Always wrap lines.
+
+#+BEGIN_SRC emacs-lisp :tangle no
+;; (global-visual-line-mode)
+#+END_SRC
 
 ** Benchmarking
 
