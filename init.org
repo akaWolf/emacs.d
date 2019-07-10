@@ -345,6 +345,12 @@ update unreliably in GUI frames, so we make an exception.
 
 *** Cursor
 
+Show full path in the title bar.
+
+#+BEGIN_SRC emacs-lisp
+(setq-default frame-title-format "%b (%f)")
+#+END_SRC
+
 *** Fringe
 
 *** Window-divider
