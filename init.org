@@ -369,6 +369,16 @@ Start maximized.
 
 *** Time
 
+#+BEGIN_SRC emacs-lisp
+(use-package time
+ :ensure nil
+ :custom
+ (display-time-default-load-average nil)
+ (display-time-24hr-format t)
+ :config
+ (display-time-mode t))
+#+END_SRC
+
 ** Editor
 *** Customizations
 
