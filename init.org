@@ -310,6 +310,13 @@ Using =reverse= naming method, buffers visiting the files =/u/rms/tmp/Makefile= 
 ** UI
 *** Basics.
 
+#+BEGIN_SRC emacs-lisp
+(setq
+ inhibit-startup-screen t ; Don't show splash screen
+ use-dialog-box nil       ; Disable dialog boxes
+ use-file-dialog nil)     ; Disable file dialog
+#+END_SRC
+
 *** Scroll
 
 *** UI elements
