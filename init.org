@@ -296,6 +296,13 @@ Using =reverse= naming method, buffers visiting the files =/u/rms/tmp/Makefile= 
 
 **** Calendar
 
+#+BEGIN_SRC emacs-lisp
+(use-package calendar
+ :ensure nil
+ :custom
+ (calendar-week-start-day 1))
+#+END_SRC
+
 **** Face remap
 
 **** CC mode
