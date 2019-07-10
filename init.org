@@ -559,6 +559,13 @@ Save buffers when they lose focus.
 
 *** Free keys
 
+Show free bindings in current buffer. To use, call the command =M-x free-keys=.
+See the [[https://github.com/Fuco1/free-keys][package repo]] for more info.
+
+#+BEGIN_SRC emacs-lisp
+(use-package free-keys)
+#+END_SRC
+
 *** Sudo edit
 
 *** Try
