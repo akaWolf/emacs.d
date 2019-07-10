@@ -521,6 +521,15 @@ See the [[https://github.com/rranelli/auto-package-update.el][package repo]] for
 
 *** Extra whitespace trimming
 
+Unobtrusively trim extraneous whitespace only in lines edited.
+
+#+BEGIN_SRC emacs-lisp
+(use-package ws-butler
+ :config
+ (ws-butler-global-mode)
+ :diminish ws-butler-mode)
+#+END_SRC
+
 *** Aggressive indent
 
 *** Auto-save buffers
