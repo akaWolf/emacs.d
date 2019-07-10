@@ -254,6 +254,16 @@ On save/write file:
 
 **** Uniquify
 
+Using =reverse= naming method, buffers visiting the files =/u/rms/tmp/Makefile= and =/usr/projects/zaphod/Makefile= would be named =‘Makefile\tmp’= and =‘Makefile\zaphod’=. It puts the directory names in reverse order, so that =/top/middle/file= becomes =‘file\middle\top’=.
+
+#+BEGIN_SRC emacs-lisp
+(use-package uniquify
+ :ensure nil
+ :custom
+ ;; use "qux\bar\foo"
+ (uniquify-buffer-name-style 'reverse))
+#+END_SRC
+
 **** Frame
 
 - Disable blinking cursor.
