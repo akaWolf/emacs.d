@@ -534,6 +534,15 @@ Unobtrusively trim extraneous whitespace only in lines edited.
 
 *** Auto-save buffers
 
+Save buffers when they lose focus.
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package super-save
+ :config
+ (super-save-mode +1)
+ :diminish)
+#+END_SRC
+
 *** Auto read-only
 
 *** Zoom
