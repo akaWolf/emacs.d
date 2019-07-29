@@ -252,6 +252,22 @@ On save/write file:
 
 **** Reverting
 
+Enable and diminish [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Autorevert.html#Autorevert][autorevert]] mode.
+
+#+BEGIN_SRC emacs-lisp
+(use-package autorevert
+ :ensure nil
+ :custom
+ ;; Don't generate any messages whenever a buffer is reverted
+ ;;(auto-revert-verbose nil)
+ ;; Operate on non-file-visiting buffers
+ (global-auto-revert-non-file-buffers t)
+ :config
+ ;; Operate on file-visiting buffers
+ (global-auto-revert-mode)
+ :diminish auto-revert-mode)
+#+END_SRC
+
 **** Uniquify
 
 Using =reverse= naming method, buffers visiting the files =/u/rms/tmp/Makefile= and =/usr/projects/zaphod/Makefile= would be named =‘Makefile\tmp’= and =‘Makefile\zaphod’=. It puts the directory names in reverse order, so that =/top/middle/file= becomes =‘file\middle\top’=.
