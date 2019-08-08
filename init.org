@@ -319,6 +319,24 @@ Using =reverse= naming method, buffers visiting the files =/u/rms/tmp/Makefile= 
  (calendar-week-start-day 1))
 #+END_SRC
 
+**** Term
+
+Disable mandatory parameter to =term= function.
+
+#+BEGIN_SRC emacs-lisp
+(use-package term
+ :ensure nil
+ :config
+ (fset 'origterm
+  (symbol-function 'term))
+ (defun term (&optional term)
+  (interactive)
+  (origterm
+   (or term
+       explicit-shell-file-name
+       shell-file-name))))
+#+END_SRC
+
 **** Face remap
 
 **** CC mode
