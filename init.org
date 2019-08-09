@@ -310,6 +310,16 @@ Using =reverse= naming method, buffers visiting the files =/u/rms/tmp/Makefile= 
 
 **** Man
 
+Format man pages [[https://unix.stackexchange.com/a/274795][properly]].
+
+#+BEGIN_SRC emacs-lisp
+(use-package man
+ :ensure nil
+ :custom-face
+ (Man-overstrike ((t (:inherit font-lock-type-face :weight bold))))
+ (Man-underline ((t (:inherit font-lock-keyword-face :slant italic)))))
+#+END_SRC
+
 **** Calendar
 
 #+BEGIN_SRC emacs-lisp
