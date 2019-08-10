@@ -349,6 +349,18 @@ Disable mandatory parameter to =term= function.
 
 **** Face remap
 
+Diminish remap mode.
+
+#+BEGIN_SRC emacs-lisp
+(use-package face-remap
+ :commands
+ (buffer-face-mode-face
+  face-remap-add-relative
+  buffer-face-mode)
+ :ensure nil
+ :diminish buffer-face-mode)
+#+END_SRC
+
 **** CC mode
 
 ** UI
