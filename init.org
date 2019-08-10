@@ -527,7 +527,7 @@ Always wrap lines.
    'default nil
    :family (caar face-font-family-alternatives)
    :weight 'regular
-   :height 240
+   :height 280
    :width 'semi-condensed)
   (set-fontset-font
    "fontset-default"
