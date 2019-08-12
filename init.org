@@ -686,6 +686,13 @@ Display ugly =^L= page breaks as tidy horizontal lines.
 
 *** Rainbow identifiers
 
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-identifiers
+ :hook
+ (prog-mode . rainbow-identifiers-mode)
+ :diminish rainbow-identifiers-mode)
+#+END_SRC
+
 *** Rainbow mode
 
 *** Idle highlight mode
