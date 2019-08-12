@@ -739,6 +739,12 @@ See the [[https://github.com/tarsius/hl-todo][package repository]] for more info
 
 *** Info colors
 
+#+BEGIN_SRC emacs-lisp
+(use-package info-colors
+ :hook
+ (Info-selection #'info-colors-fontify-node))
+#+END_SRC
+
 *** Fill column
 
 *** All the icons
