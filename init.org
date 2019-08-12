@@ -695,6 +695,12 @@ Display ugly =^L= page breaks as tidy horizontal lines.
 
 *** Rainbow mode
 
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-mode
+ :diminish rainbow-mode
+ :hook prog-mode)
+#+END_SRC
+
 *** Idle highlight mode
 
 *** Hl-todo
