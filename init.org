@@ -624,6 +624,13 @@ See the [[https://github.com/Fuco1/free-keys][package repo]] for more info.
 
 *** Sudo edit
 
+Utilities for opening files with sudo. Just type =M-x sudo= on an already opened
+read-only file.
+
+#+BEGIN_SRC emacs-lisp
+(use-package sudo-edit)
+#+END_SRC
+
 *** Try
 
 *** Restart
