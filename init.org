@@ -771,6 +771,18 @@ the =doom-modeline= package.
 
 *** Beacon
 
+*** Git gutter
+
+Mark uncommitted changes in the fringe.
+
+#+BEGIN_SRC emacs-lisp
+(use-package git-gutter
+ :ensure t
+ :config
+ (global-git-gutter-mode t)
+ :diminish git-gutter-mode)
+#+END_SRC
+
 ** Evil
 *** Main
 
