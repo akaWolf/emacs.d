@@ -703,6 +703,21 @@ Display ugly =^L= page breaks as tidy horizontal lines.
 
 *** Idle highlight mode
 
+Basically its the same as highlight-thing but seems to be smarter and less
+distracting.
+
+#+BEGIN_SRC emacs-lisp
+(use-package idle-highlight-mode
+ :custom
+ (idle-highlight-idle-time 0.2)
+ :hook
+ (prog-mode . idle-highlight-mode)
+ :config
+ ;; (set-face-background 'idle-highlight "#c51060")
+ (set-face-foreground 'idle-highlight "#999")
+ (set-face-background 'idle-highlight "#222"))
+#+END_SRC
+
 *** Hl-todo
 
 *** Highlight indentation
