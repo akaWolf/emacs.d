@@ -633,6 +633,12 @@ read-only file.
 
 *** Try
 
+Allows you to try out Emacs packages without installing them. Just type =M-x try=.
+
+#+BEGIN_SRC emacs-lisp
+(use-package try)
+#+END_SRC
+
 *** Restart
 
 ** Appearance
