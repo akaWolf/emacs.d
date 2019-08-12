@@ -752,6 +752,22 @@ See the [[https://github.com/tarsius/hl-todo][package repository]] for more info
 *** Emojify
 
 *** Mode line
+**** Mood-line (active)
+
+A minimal mode-line configuration that aims to replicate some of the features of
+the =doom-modeline= package.
+
+#+BEGIN_SRC emacs-lisp
+(use-package mood-line
+ :hook
+ (after-init . mood-line-mode))
+#+END_SRC
+
+**** Moody + minions
+
+**** Spaceline
+
+**** Flycheck color
 
 *** Beacon
 
