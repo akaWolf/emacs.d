@@ -720,6 +720,15 @@ distracting.
 
 *** Hl-todo
 
+Highlight TODO and similar keywords in comments and strings.
+See the [[https://github.com/tarsius/hl-todo][package repository]] for more info.
+
+#+BEGIN_SRC emacs-lisp
+(use-package hl-todo
+ :config
+ (global-hl-todo-mode))
+#+END_SRC
+
 *** Highlight indentation
 
 *** Highlight chars
