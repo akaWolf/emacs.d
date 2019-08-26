@@ -957,6 +957,14 @@ Mark uncommitted changes in the fringe.
 
 *** EShell toggle
 
+*** VTerm
+
+Install [[libvterm][https://github.com/akermu/emacs-libvterm]].
+
+#+BEGIN_SRC emacs-lisp
+(use-package vterm)
+#+END_SRC
+
 ** Undo
 *** Propose
 
