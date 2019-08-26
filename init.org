@@ -521,7 +521,7 @@ Always wrap lines.
   :ensure nil
   :custom
   (face-font-family-alternatives
-   '(("Inconsolata LGC")))
+   '(("Ricty Diminished L")))
   :init
   (set-face-attribute
    'default nil
