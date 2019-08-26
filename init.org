@@ -1271,6 +1271,23 @@ Install [[libvterm][https://github.com/akermu/emacs-libvterm]].
 
 *** Telega
 
+=telega.el= is full featured unofficial client for Telegram platform for GNU Emacs.
+
+#+BEGIN_SRC emacs-lisp
+(use-package telega
+ :requires
+ (tracking)
+ :config
+ (telega-notifications-mode 1)
+ (telega-mode-line-mode 1)
+ :custom
+ (telega-use-tracking t)
+ :custom-face
+ (telega-entity-type-code ((t :family "Iosevka")))
+ (telega-entity-type-pre ((t :family "Iosevka")))
+ (telega-webpage-fixed ((t :family "Iosevka" :height 0.85))))
+#+END_SRC
+
 ** Pomodoro
 
 ** Statistics
