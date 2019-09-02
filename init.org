@@ -511,6 +511,41 @@ Always wrap lines.
 
 ** Quelpa
 
+Setup [[https://framagit.org/steckerhalter/quelpa][quelpa]].
+
+#+BEGIN_SRC emacs-lisp
+(if (require 'quelpa nil t)
+  ;; Prevent quelpa from doing anyting that requires network connection.
+  (setq
+   quelpa-update-melpa-p nil    ; Don't update MELPA git repo
+   quelpa-checkout-melpa-p nil  ; Don't clone MELPA git repo
+   quelpa-upgrade-p nil         ; Don't try to update packages automatically
+   quelpa-self-upgrade-p nil)   ; Don't upgrade quelpa automatically
+
+  ;; Comment/uncomment line below to disable/enable quelpa auto-upgrade.
+  ;; (quelpa-self-upgrade)
+
+  (with-temp-buffer
+    (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
+    (eval-buffer)))
+#+END_SRC
+
+Install =use-package= and the =quelpa= handler.
+
+#+BEGIN_SRC emacs-lisp
+(quelpa
+ '(quelpa-use-package
+   :fetcher github
+   :repo "quelpa/quelpa-use-package"))
+(require 'quelpa-use-package)
+#+END_SRC
+
+Advice setting ~:ensure nil~ for =use-package= + =quelpa=.
+
+#+BEGIN_SRC emacs-lisp
+(quelpa-use-package-activate-advice)
+#+END_SRC
+
 ** Use-package plugins
 
 ** Font

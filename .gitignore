@@ -1,6 +1,7 @@
 auto-save-list/
 tutorial/
 elpa/
+quelpa/
 custom.el
 init.elc
 recentf
