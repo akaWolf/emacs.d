@@ -791,12 +791,24 @@ See the [[https://github.com/tarsius/hl-todo][package repository]] for more info
 *** Emojify
 
 *** Mode line
-**** Mood-line (active)
+
+**** Good-line (active)
+
+Mood-line [[https://github.com/TatriX/good-line][fork]].
+
+#+BEGIN_SRC emacs-lisp
+(use-package good-line
+ :hook
+ (after-init . good-line-mode)
+ :quelpa (good-line :fetcher github :repo "TatriX/good-line"))
+#+END_SRC
+
+**** Mood-line
 
 A minimal mode-line configuration that aims to replicate some of the features of
 the =doom-modeline= package.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package mood-line
  :hook
  (after-init . mood-line-mode))
