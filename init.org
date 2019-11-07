@@ -1354,7 +1354,18 @@ Install [[libvterm][https://github.com/akermu/emacs-libvterm]].
  :custom-face
  (telega-entity-type-code ((t :family "Iosevka")))
  (telega-entity-type-pre ((t :family "Iosevka")))
- (telega-webpage-fixed ((t :family "Iosevka" :height 0.85))))
+ (telega-webpage-fixed ((t :family "Iosevka" :height 0.85)))
+ :init
+ (add-hook 'telega-chat-mode-hook
+   (lambda ()
+     (set
+       (make-local-variable 'company-backends)
+       (append '(telega-company-emoji
+                   telega-company-username
+                   telega-company-hashtag)
+               (when (and telega-chatbuf--chat (telega-chat-bot-p telega-chatbuf--chat))
+                     '(telega-company-botcmd))))
+     (company-mode 1))))
 #+END_SRC
 
 ** Pomodoro
