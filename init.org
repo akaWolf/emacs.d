@@ -329,6 +329,24 @@ Format man pages [[https://unix.stackexchange.com/a/274795][properly]].
  (calendar-week-start-day 1))
 #+END_SRC
 
+**** Ido
+
+Use [[https://www.masteringemacs.org/article/introduction-to-ido-mode][Ido mode]].
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package ido
+ :ensure nil
+ :config
+ (ido-mode 1)
+ ;; let's try with vertical aligned variants
+ (setf (nth 2 ido-decorations) "\n")
+ :custom
+ ;; show any name that has the chars you typed
+ (ido-enable-flex-matching t)
+ ;; enable ido for all buffers
+ (ido-everywhere t))
+#+END_SRC
+
 **** Term
 
 Disable mandatory parameter to =term= function.
