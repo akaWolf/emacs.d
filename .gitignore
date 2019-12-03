@@ -7,3 +7,5 @@ init.elc
 recentf
 places
 .last-package-update-day
+ido.last
+tramp
