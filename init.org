@@ -714,6 +714,12 @@ Allows you to try out Emacs packages without installing them. Just type =M-x try
 
 *** Restart
 
+#+BEGIN_SRC emacs-lisp
+(use-package restart-emacs
+ :after general
+ :demand t)
+#+END_SRC
+
 ** Appearance
 *** Customization
 
