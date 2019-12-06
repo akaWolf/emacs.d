@@ -598,10 +598,24 @@ Advice setting ~:ensure nil~ for =use-package= + =quelpa=.
 
 Use [[https://github.com/arcticicestudio/nord-emacs][Nord Emacs theme]].
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package nord-theme
+  :ensure t
   :config
   (load-theme 'nord t))
+#+END_SRC
+
+Use [[https://draculatheme.com/emacs/][Dracula Emacs theme]].
+Note that despite set-cursor-color function belongs to the frame package, it
+used here since load-theme call overwrite cursor color value.
+- Set cursor color to red.
+
+#+BEGIN_SRC emacs-lisp
+(use-package dracula-theme
+  :ensure t
+  :config
+  (load-theme 'dracula t)
+  (set-cursor-color "red3"))
 #+END_SRC
 
 ** Key bindings
