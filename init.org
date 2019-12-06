@@ -1371,6 +1371,7 @@ Install [[libvterm][https://github.com/akermu/emacs-libvterm]].
  :config
  (telega-notifications-mode 1)
  (telega-mode-line-mode 1)
+ (setq telega-chat-show-deleted-messages t)
  :custom
  (telega-use-tracking t)
  :custom-face
