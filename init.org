@@ -284,12 +284,14 @@ Using =reverse= naming method, buffers visiting the files =/u/rms/tmp/Makefile= 
 
 - Disable blinking cursor.
 - Disable suspending on =C-z=.
+- Stretch cursor on wide characters.
 
 #+BEGIN_SRC emacs-lisp
 (use-package frame
  :ensure nil
  :config
  (blink-cursor-mode 0)
+ (setq x-stretch-cursor t)
  :bind
  ("C-z" . nil))
 #+END_SRC
