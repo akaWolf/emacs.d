@@ -964,6 +964,13 @@ Mark uncommitted changes in the fringe.
 
 *** Company quickhelp
 
+#+BEGIN_SRC emacs-lisp
+(use-package company-quickhelp
+ :after company
+ :custom
+ (company-quickhelp-delay 3))
+#+END_SRC
+
 *** Company FLX
 
 ** Spellcheck
