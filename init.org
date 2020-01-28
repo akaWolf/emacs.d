@@ -994,6 +994,40 @@ This only works with the =company-capf= backend.
 
 ** Flycheck
 
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+  :after (general)
+  :demand t
+  :commands
+  (global-flycheck-mode)
+  :init
+  (setq-default
+   flycheck-disabled-checkers
+   '(emacs-lisp-checkdoc
+     javascript-jshint
+     haskell-stack-ghc
+     haskell-ghc
+     haskell-hlint))
+  (setq
+   flycheck-highlighting-mode 'lines
+   flycheck-indication-mode 'left-fringe
+   flycheck-mode-line-prefix "fly"
+   flycheck-javascript-eslint-executable "eslint_d")
+  :config
+  (global-flycheck-mode 1)
+  ;; Make the error list display like similar lists in contemporary IDEs
+  ;; like VisualStudio, Eclipse, etc.
+  (add-to-list
+   'display-buffer-alist
+   `(,(rx bos "*errors*" eos)
+     ;; (display-buffer-reuse-window
+     ;;  display-buffer-in-side-window)
+     (side . bottom)
+     (reusable-frames . visible)
+     (window-height . 0.33)))
+  :diminish flycheck-mode)
+#+END_SRC
+
 ** Flyspell
 
 ** Compilation
