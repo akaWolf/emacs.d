@@ -1340,11 +1340,103 @@ Install [[libvterm][https://github.com/akermu/emacs-libvterm]].
 ** LSP
 *** Mode
 
+Setup [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
+
+#+BEGIN_SRC emacs-lisp
+(use-package lsp-mode
+ :after (general projectile)
+ :commands (lsp)
+ :init
+ ;; Uncomment to inspect communication between client and the server
+ (setq lsp-print-io t)
+ (setq lsp-prefer-flymake nil)
+ :delight "lsp")
+#+END_SRC
+
 *** LSP UI
+
+#+BEGIN_SRC emacs-lisp
+(use-package lsp-ui
+ :after (lsp-mode)
+ :commands (lsp-ui-mode general)
+ :init
+ (setq-default
+  lsp-ui-doc-frame-parameters
+  '((left . -1)
+    (top . -1)
+    (no-accept-focus . t)
+    (min-width . 0)
+    (width . 0)
+    (min-height . 0)
+    (height . 0)
+    (internal-border-width . 5)
+    (vertical-scroll-bars)
+    (horizontal-scroll-bars)
+    (left-fringe . 0)
+    (right-fringe . 0)
+    (menu-bar-lines . 0)
+    (tool-bar-lines . 0)
+    (line-spacing . 0.1)
+    (unsplittable . t)
+    (undecorated . t)
+    (minibuffer . nil)
+    (visibility . nil)
+    (mouse-wheel-frame . nil)
+    (no-other-frame . t)
+    (cursor-type)
+    (no-special-glyphs . t)
+    (visual-line-mode . -1)))
+ :config
+ (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+ (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
+ (add-hook 'lsp-ui-doc-frame-hook
+  (lambda (frame _w)
+    (set-face-attribute 'default frame :font "Fira Code" :height 110)))
+ (setq
+  lsp-ui-sideline-enable nil
+  lsp-enable-completion-at-point t
+  lsp-ui-doc-position 'bottom
+  ; lsp-ui-doc-position 'at-point
+  lsp-ui-doc-header nil
+  lsp-ui-doc-enable nil
+  lsp-ui-doc-delay 0.5
+  lsp-ui-doc-use-webkit nil
+  ;; lsp-ui-doc-max-width 160
+  ;; lsp-ui-doc-max-height 20
+  ;; lsp-ui-doc-use-childframe t
+  lsp-ui-doc-include-signature t
+  lsp-ui-doc-border "#222"
+  ;; lsp-ui-flycheck-enable t
+  lsp-ui-peek-fontify nil
+  lsp-ui-peek-expand-function (lambda (xs) (mapcar #'car xs))))
+#+END_SRC
 
 *** Company LSP
 
+#+BEGIN_SRC emacs-lisp
+(use-package company-lsp
+ :after (lsp-mode company)
+ ;; :quelpa
+ ;; (company-lsp :fetcher github :repo "tigersoldier/company-lsp")
+ :commands (company-lsp)
+ :init
+ (setq
+  ;; Don't filter results on the client side
+  company-transformers nil
+  company-lsp-cache-candidates 'auto
+  company-lsp-async t
+  company-lsp-enable-snippet t)
+ :config
+ (push 'company-lsp company-backends))
+#+END_SRC
+
 *** Treemacs
+
+#+BEGIN_SRC emacs-lisp
+(use-package lsp-treemacs
+ :after (general)
+ :commands lsp-treemacs-errors-list)
+#+END_SRC
 
 ** Languages
 *** Lisp
