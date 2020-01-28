@@ -527,6 +527,12 @@ Always wrap lines.
 ;; (global-visual-line-mode)
 #+END_SRC
 
+Disable special glyph for non-ASCII spaces.
+
+#+BEGIN_SRC emacs-lisp
+(setq nobreak-char-display nil)
+#+END_SRC
+
 ** Benchmarking
 
 ** Quelpa
