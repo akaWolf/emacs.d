@@ -973,6 +973,23 @@ Mark uncommitted changes in the fringe.
 
 *** Company FLX
 
+FLX fuzzy matching for =company=.
+This only works with the =company-capf= backend.
+
+#+BEGIN_SRC emacs-lisp
+(use-package flx)
+
+(use-package company-flx
+ :after (company flx)
+ :commands
+ (company-flx-mode)
+ :demand t
+ :config
+ ;; use C-o to switch backend and
+ ;; enable company mode fuzziness
+ (company-flx-mode +1))
+#+END_SRC
+
 ** Spellcheck
 
 ** Flycheck
