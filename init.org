@@ -646,7 +646,7 @@ See the [[https://github.com/rranelli/auto-package-update.el][package repo]] for
  (setq
   auto-package-update-delete-old-versions t ; Delete residual old version directory when updating
   auto-package-update-interval 1)           ; Update packages every day
- (auto-package-update-maybe)                ; Check for updates on startup
+; (auto-package-update-maybe)                ; Check for updates on startup
  (auto-package-update-at-time "06:00"))     ; Update at =6:00=
 #+END_SRC
 
