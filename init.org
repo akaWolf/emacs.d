@@ -928,6 +928,40 @@ Mark uncommitted changes in the fringe.
 ** Completion
 *** Company
 
+#+BEGIN_SRC emacs-lisp
+(use-package company
+ :hook
+ ;; Use company-mode in all buffers
+ (after-init . global-company-mode)
+ :custom
+ (company-dabbrev-ignore-case nil)
+ (company-dabbrev-code-ignore-case nil)
+ (company-dabbrev-downcase nil)
+ (company-idle-delay 0.2 "adjust this setting according to your typing speed")
+ (company-minimum-prefix-length 1)
+ ;; Disable in org
+ ;;(company-global-modes '(not org-mode))
+ :config
+ ;; Style nicely
+ (let* ((bg (face-attribute 'default :background))
+       (bg-light (color-lighten-name bg 2))
+       (bg-lighter (color-lighten-name bg 5))
+       (bg-lightest (color-lighten-name bg 10))
+       (ac (face-attribute 'match :foreground)))
+  (custom-set-faces
+   `(company-tooltip
+     ((t (:inherit default :background ,bg-light))))
+   `(company-scrollbar-bg ((t (:background ,bg-lightest))))
+   `(company-scrollbar-fg ((t (:background ,bg-lighter))))
+   `(company-tooltip-selection
+     ((t (:inherit font-lock-function-name-face))))
+   `(company-tooltip-common
+     ((t (:inherit font-lock-constant-face))))
+   `(company-preview-common
+     ((t (:foreground ,ac :background ,bg-lightest))))))
+ :diminish company-mode)
+#+END_SRC
+
 *** Company quickhelp
 
 *** Company FLX
