@@ -1709,9 +1709,11 @@ Setup [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
  :config
  (telega-notifications-mode 1)
  (telega-mode-line-mode 1)
- (setq telega-chat-show-deleted-messages t)
+ (setq telega-chat-show-deleted-messages-for 'all)
+ (setq telega-tdlib-min-version "1.5.0")
  :custom
- (telega-use-tracking t)
+ (telega-use-tracking-for 'all)
+ (telega-chat-prompt-show-avatar-for 'nil)
  :custom-face
  (telega-entity-type-code ((t :family "Iosevka")))
  (telega-entity-type-pre ((t :family "Iosevka")))
