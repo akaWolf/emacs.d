@@ -268,6 +268,26 @@ Enable and diminish [[https://www.gnu.org/software/emacs/manual/html_node/emacs/
  :diminish auto-revert-mode)
 #+END_SRC
 
+**** Reverse-im
+
+[[https://github.com/a13/reverse-im.el][Reverse-im]] translates local bindings (like russian-computer used here) to
+Emacs bindings.
+
+#+BEGIN_SRC emacs-lisp
+(use-package reverse-im
+  :ensure t
+  :demand t
+;;  :after char-fold
+  :bind
+  ("M-T" . reverse-im-translate-word)
+  :custom
+  (reverse-im-char-fold t)
+  (reverse-im-read-char-advice-function #'reverse-im-read-char-exclude)
+  (reverse-im-input-methods '("russian-computer"))
+  :config
+  (reverse-im-mode t))
+#+END_SRC
+
 **** Uniquify
 
 Using =reverse= naming method, buffers visiting the files =/u/rms/tmp/Makefile= and =/usr/projects/zaphod/Makefile= would be named =‘Makefile\tmp’= and =‘Makefile\zaphod’=. It puts the directory names in reverse order, so that =/top/middle/file= becomes =‘file\middle\top’=.
