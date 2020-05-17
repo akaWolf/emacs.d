@@ -1337,7 +1337,13 @@ https://projectile.readthedocs.io/en/latest/usage/
 Install [[libvterm][https://github.com/akermu/emacs-libvterm]].
 
 #+BEGIN_SRC emacs-lisp
-(use-package vterm)
+(use-package vterm
+  :custom
+  (vterm-buffer-name-string "vterm %s")
+  :init
+  (add-hook 'vterm-exit-functions
+    (lambda (buffer event)
+      (kill-buffer buffer))))
 #+END_SRC
 
 ** Undo
