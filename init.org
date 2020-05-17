@@ -417,6 +417,14 @@ Diminish remap mode.
 
 *** UI elements
 
+Set cursor color.
+Use default-frame-alist instead of set-cursor-color to ensure that newly
+created frames will have right settings.
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'default-frame-alist '(cursor-color . "red3"))
+#+END_SRC
+
 Hide toolbar and scrollbars.
 
 #+BEGIN_SRC emacs-lisp
@@ -640,8 +648,7 @@ used here since load-theme call overwrite cursor color value.
 (use-package dracula-theme
   :ensure t
   :config
-  (load-theme 'dracula t)
-  (set-cursor-color "red3"))
+  (load-theme 'dracula t))
 #+END_SRC
 
 ** Key bindings
