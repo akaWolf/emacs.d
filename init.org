@@ -719,6 +719,17 @@ Save buffers when they lose focus.
 
 *** Which key
 
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+ :diminish which-key-mode
+ :init
+ (setq
+  which-key-idle-delay 0.5
+  which-key-sort-order 'which-key-prefix-then-key-order-reverse)
+ :config
+ (which-key-mode))
+#+END_SRC
+
 *** Free keys
 
 Show free bindings in current buffer. To use, call the command =M-x free-keys=.
