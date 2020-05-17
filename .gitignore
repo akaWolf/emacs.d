@@ -9,3 +9,8 @@ places
 .last-package-update-day
 ido.last
 tramp
+.cache/
+.lsp-session-v1
+projectile-bookmarks.eld
+projectile.cache
+transient/
