@@ -1758,10 +1758,408 @@ Install [[libvterm][https://github.com/akermu/emacs-libvterm]].
 
 ** Org
 *** Main
+**** Setup
+
+#+begin_src emacs-lisp
+(use-package org
+  :after (general counsel)
+  :mode ("\\.org\\'" . org-mode)
+  :commands
+  (org-babel-do-load-languages)
+  :init
+#+end_src
+
+**** Config
+
+Visually indent sections. This looks better for smaller files.
+Also, disallow editing invisible areas.
+
+#+begin_src emacs-lisp
+(setq org-startup-indented t)
+(setq org-catch-invisible-edits 'error)
+#+end_src
+
+This feature came to Org in version 8. It lets you type “normal
+quotes” in the org buffer, as opposed to =“this latex stuff”=,
+and will transform them on export so that your HTML/text output
+looks nice and your latex export looks nice!
+
+#+begin_src emacs-lisp
+(setq org-export-with-smart-quotes t)
+#+end_src
+
+Forces to mark all child tasks as =DONE= before you can mark the
+parent as =DONE=.
+
+#+begin_src emacs-lisp
+(setq org-enforce-todo-dependencies t)
+#+end_src
+
+Allows displaying UTF-8 chars like ~\alpha~.
+
+#+begin_src emacs-lisp
+(setq org-pretty-entities t)
+#+end_src
+
+Insert an annotation in a task when it is marked as done
+including a timestamp of when exactly that happened.
+
+#+begin_src emacs-lisp
+(setq org-log-done 'time)
+#+end_src
+
+Insert annotations when you change the deadline of a task, which
+will note the previous deadline date and when it was changed.
+
+#+begin_src emacs-lisp
+(setq org-log-redeadline (quote time))
+#+end_src
+
+Same as above, but for the scheduled dates.
+
+#+begin_src emacs-lisp
+(setq org-log-reschedule (quote time))
+#+end_src
+
+Hide leading stars.
+
+#+begin_src emacs-lisp
+(setq org-hide-leading-stars t)
+#+end_src
+
+Use syntax highlighting in source blocks while editing.
+
+#+begin_src emacs-lisp
+(setq org-src-fontify-natively t)
+#+end_src
+
+Noticeable ellipsis. Others:
+
+~▼~, ~↴~, ~⬎~, ~⤷~, ~…~, ~⤵~, ~⋱~, ~•~
+
+#+begin_src emacs-lisp
+(setq org-ellipsis "…")
+#+end_src
+
+Keep org files in =Dropbox=.
+And all of those files should be in included agenda.
+
+#+begin_src emacs-lisp
+(setq
+ org-directory "~/Dropbox/org"
+ org-agenda-files '("~/Dropbox/org/"))
+#+end_src
+
+Refile targets should include files and down to 9 levels into them.
+
+#+begin_src emacs-lisp
+(setq
+ org-refile-targets
+ (quote ((nil :maxlevel . 9)
+  (org-agenda-files :maxlevel . 9))))
+#+end_src
+
+And inside those code blocks indentation should be correct
+depending on the source language used and have code
+highlighting.
+
+#+begin_src emacs-lisp
+(setq org-src-tab-acts-natively t)
+(setq org-src-preserve-indentation t)
+(setq org-src-fontify-natively t)
+#+end_src
+
+State changes for todos and also notes should go into a Logbook
+drawer:
+
+#+begin_src emacs-lisp
+(setq org-log-into-drawer t)
+#+end_src
+
+Open URLs in Firefox.
+
+#+begin_src emacs-lisp
+(setq
+ org-file-apps
+ (quote
+  ((auto-mode . emacs)
+   ("\\.mm\\'" . default)
+   ("\\.x?html?\\'" . "google-chrome %s")
+   ("\\.pdf\\'" . default))))
+#+end_src
+
+Custom capture templates.
+
+#+begin_src emacs-lisp
+(setq
+ org-capture-templates
+ '(("t" "todo" entry (file "todo.org") "* TODO %^{task name}\n%u\n%a\n")
+   ("n" "note" entry (file "notes.org") "* %^{heading} %t %^g\n  %?\n")
+   ("j" "journal" entry (file "journal.org") "* %U - %^{heading}\n  %?")))
+#+end_src
+
+I keep my links in =links.org=, export them to HTML and access
+them via browser. This makes the HTML file automatically on
+every save.
+
+#+begin_src emacs-lisp
+  (defun org-mode-export-links ()
+    "Export links document to HTML automatically when 'links.org' is changed"
+    (when (equal (buffer-file-name) "~/Dropbox/org/links.org")
+      (progn
+        (org-html-export-to-html)
+        (alert "HTML exported" :severity 'trivial :title "ORG"))))
+
+  (add-hook 'after-save-hook 'org-mode-export-links)
+#+end_src
+
+Set =TODO= priorities.
+
+#+begin_src emacs-lisp
+(setq
+ org-highest-priority ?A
+ org-lowest-priority ?C
+ org-default-priority ?B)
+#+end_src
+
+Set default task sequence/lifecycle, colors and triggers.
+
+#+begin_src emacs-lisp
+(setq
+  org-todo-keywords
+  '((sequence "TODO" "IN-PROGRESS" "WAITING" "HOLD" "|" "DONE" "CANCELLED"))
+  org-todo-keyword-faces
+  '(("TODO" :foreground "magenta2" :weight bold)
+    ("IN-PROGRESS" :foreground "dodger blue" :weight bold)
+    ("WAITING" :foreground "orange" :weight bold)
+    ("DONE" :foreground "forest green" :weight bold)
+    ("HOLD" :foreground "magenta" :weight bold)
+    ("CANCELLED" :foreground "forest green" :weight bold)
+    ("BUG" :foreground "red" :weight bold)
+    ("UNTESTED" . "purple"))
+  org-todo-state-tags-triggers
+  '(("CANCELLED" ("CANCELLED" . t))
+    ("WAITING" ("WAITING" . t))
+    ("HOLD" ("WAITING") ("HOLD" . t))
+    (done ("WAITING") ("HOLD"))
+    ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+    ("IN-PROGRESS" ("WAITING") ("CANCELLED") ("HOLD"))
+    ("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))
+#+end_src
+
+Do not dim blocked tasks.
+
+#+begin_src emacs-lisp
+(setq org-agenda-dim-blocked-tasks nil)
+#+end_src
+
+Compact the block agenda view.
+
+#+begin_src emacs-lisp
+(setq org-agenda-compact-blocks t)
+#+end_src
+
+Hide =DONE= items.
+
+#+begin_src emacs-lisp
+(setq
+ org-agenda-skip-scheduled-if-done t
+ org-agenda-skip-deadline-if-done t)
+#+end_src
+
+Set a 30 day span, instead of a week view.
+
+#+begin_src emacs-lisp
+(setq
+ org-agenda-start-day "-3d"
+ org-agenda-span 30)
+#+end_src
+
+Omit empty days in the agenda.
+
+#+begin_src emacs-lisp
+(setq org-agenda-show-all-dates nil)
+#+end_src
+
+Disable pre-warnings.
+
+#+begin_src emacs-lisp
+(setq org-deadline-warning-days 0)
+#+end_src
+
+Hide the time grid by default.
+
+#+begin_src emacs-lisp
+(setq org-agenda-use-time-grid nil)
+#+end_src
+
+Make the agenda schedule prettier.
+
+#+begin_src emacs-lisp
+(setq
+ org-agenda-prefix-format
+ '((agenda . " %i %-12t% s %b\n")
+   (timeline . "  % s")
+   (todo . " %i %-12:c")
+   (tags . " %i %-12:c")
+   (search . " %i %-12:c")))
+#+end_src
+
+Next comes the ~:config~ section.
+
+#+begin_src emacs-lisp
+:config
+(require 'org)
+#+end_src
+
+Makes inline latex previews bigger.
+
+#+begin_src emacs-lisp
+(setq
+ org-format-latex-options
+ (plist-put org-format-latex-options :scale 1.7))
+#+end_src
+
+#+begin_src emacs-lisp
+(setcdr (assq t org-file-apps-gnu) 'browse-url-xdg-open)
+#+end_src
+
+#+begin_src emacs-lisp
+:delight "org")
+#+end_src
 
 *** Evil
 
 *** Bullets
+**** org-superstar
+
+Prettify headings and plain lists in Org mode. This package is a
+direct descendant of =org-bullets=, with most of the code base
+completely rewritten.
+
+#+begin_src emacs-lisp
+(use-package org-superstar
+ :after (org)
+ :config
+ (org-superstar-configure-like-org-bullets)
+ :hook
+ (org-mode . org-superstar-mode))
+#+end_src
+
+**** org-bullets (disabled)
+
+I use =org-superstart= instead, so it is currently disabled.
+
+#+begin_src emacs-lisp :tangle no
+(use-package org-bullets
+ :after org
+ :hook
+ (org-mode . org-bullets-mode))
+#+end_src
+
+*** Cliplink
+
+Paste links from clipboard and automatically fetch title.
+
+#+begin_src emacs-lisp
+(use-package org-cliplink)
+#+end_src
+
+*** Pandoc exporter
+
+#+begin_src emacs-lisp
+(use-package ox-pandoc)
+#+end_src
+
+*** Blogging with hugo
+
+Install =ox-hugo= and enable auto export.
+
+#+begin_src emacs-lisp
+(use-package ox-hugo
+  :after (ox org-capture)
+  :commands (org-hugo-slug)
+  :custom
+  (org-hugo-delete-trailing-ws nil)
+  :config
+  ;; Define variable to get rid of 'reference to free variable' warnings.
+  (defun my/org-hugo/new-subtree-post ()
+    "Returns `org-capture' template string for new blog post.
+     See `org-capture-templates' for more information."
+    (let*
+        ;; Prompt to enter the post title
+        ((title (read-from-minibuffer "Post Title: "))
+         (lang (read-from-minibuffer "Lang code (e.g. ru-ru): "))
+         (date (format-time-string (org-time-stamp-format :long :inactive) (org-current-time)))
+         (fname (concat (org-hugo-slug title) "." lang)))
+      (mapconcat
+       #'identity
+       `(
+         ,(concat "* TODO " title)
+         ":PROPERTIES:"
+         ,(concat ":EXPORT_FILE_NAME: " fname)
+         ,(concat ":EXPORT_DATE: " date) ;Enter current date and time
+         ":END:"
+         "%?\n") ; Place the cursor here finally
+       "\n")))
+  ;; org-capture template to quickly create posts and generate slugs.
+  (add-to-list
+   'org-capture-templates
+   '("b"
+     "blog post"
+     entry
+     (file "~/projects/personal/blog/content-org/posts.org")
+     (function my/org-hugo/new-subtree-post))))
+#+end_src
+
+*** Slim HTML export (disabled)
+
+=slimhtml= is an emacs =org= mode export backend. It is a set of
+transcoders for common =org= elements which outputs minimal =HTML=.
+
+#+begin_src emacs-lisp :tangle no
+(use-package htmlize)
+(use-package ox-slimhtml)
+
+(defun org-html-export-as-slimhtml
+(&optional async subtreep visible-only body-only ext-plist)
+  (interactive)
+  (org-export-to-buffer 'slimhtml "*slimhtml*"
+    async subtreep visible-only body-only ext-plist (lambda () (html-mode))))
+
+(eval-after-load 'org
+  `(define-key org-mode-map
+     (kbd "s-O")
+     (lambda ()
+       (interactive)
+       (org-html-export-as-slimhtml nil nil nil t)
+       (with-no-warnings (mark-whole-buffer))
+       ;; TODO: I don't use simpleclip, so need to update this
+       ;; (simplecmlip-copy (point-min) (point-max))
+       (delete-window))))
+#+end_src
+
+*** Org Download (disabled)
+
+Drag and drop images to =org= files.
+
+#+begin_src emacs-lisp :tangle no
+(use-package org-download
+  :config
+  ;; Org-download creates links, but I need to change the path
+  ;; for my blog. This simple hook runs on every save.
+  (defun org-mode-blog-fix-org-downloaded-image-paths ()
+    (when (equal (buffer-file-name) "~/projects/personal/blog/content-org/blog.org")
+      (progn
+        (while (re-search-forward "file:../static" nil t)
+          (replace-match "file:"))
+        (while (re-search-backward "file:../static" nil t)
+          (replace-match "file:")))))
+
+  (add-hook 'after-save-hook 'org-mode-blog-fix-org-downloaded-image-paths)
+  :hook
+  (dired-mode-hook . org-download-enable))
+#+end_src
 
 ** LSP
 *** Mode
