@@ -910,6 +910,22 @@ Allows you to try out Emacs packages without installing them. Just type =M-x try
  :demand t)
 #+END_SRC
 
+*** backward-forward
+
+#+BEGIN_SRC emacs-lisp
+(use-package backward-forward
+ :after general
+ :demand t
+ :config
+ (backward-forward-mode t)
+ :bind
+ (:map backward-forward-mode-map
+  ("<C-left>" . nil)
+  ("<C-right>" . nil)
+  ("<M-left>" . backward-forward-previous-location)
+  ("<M-right>" . backward-forward-next-location)))
+#+END_SRC
+
 ** Appearance
 *** Customization
 
