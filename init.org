@@ -2378,6 +2378,56 @@ Setup [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
 
 *** Python
 
+Replace keywords with mathematical symbols.
+Currently disabled due to graphical issues.
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package python-mode
+ :preface
+ (defun my/python-mode/setup ()
+   (mapc (lambda (pair) (push pair prettify-symbols-alist))
+         '(("def" . "𝒇")
+           ("class" . "𝑪")
+           ("and" . "∧")
+           ("or" . "∨")
+           ("not" . "￢")
+           ("in" . "∈")
+           ("not in" . "∉")
+           ("return" . "⟼")
+           ("yield" . "⟻")
+           ("for" . "∀")
+           ("!=" . "≠")
+           ("==" . "＝")
+           (">=" . "≥")
+           ("<=" . "≤")
+           ("[]" . "⃞")
+           ("=" . "≝"))))
+ :hook
+ (python-mode . my/python-mode/setup))
+#+END_SRC
+
+Using https://github.com/Microsoft/python-language-server
+Currently disabled due to abandon of the project.
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package lsp-python-ms
+  :ensure t
+  :init (setq lsp-python-ms-auto-install-server t)
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-python-ms)
+
+                          (lsp))))  ; or lsp-deferred
+#+END_SRC
+
+Using https://github.com/microsoft/pyright
+#+BEGIN_SRC emacs-lisp
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp))))  ; or lsp-deferred
+;  :custom
+;  (lsp-pyright-multi-root nil)
+#+END_SRC
+
 *** Ruby
 
 *** PHP
