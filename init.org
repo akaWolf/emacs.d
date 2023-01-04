@@ -1571,6 +1571,10 @@ Here is the [[https://github.com/Yevgnen/ivy-rich][package repo]].
 
 *** FZF
 
+#+begin_src emacs-lisp
+(use-package fzf)
+#+end_src
+
 *** Counsel
 
 *** Ace link
