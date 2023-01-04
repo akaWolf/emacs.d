@@ -1577,6 +1577,21 @@ Here is the [[https://github.com/Yevgnen/ivy-rich][package repo]].
 
 *** Counsel
 
+#+begin_src emacs-lisp
+(use-package counsel
+ :after general
+ ;;:demand t
+ :init
+ ;; Much faster than grep
+ (setq
+  counsel-git-cmd "rg --files"
+  ;; Truncate all lines that are longer than 120 characters
+  counsel-grep-base-command
+  "rg -i -M 120 --no-heading --line-number --color never %s .")
+ :config
+  (counsel-mode 1))
+#+end_src
+
 *** Ace link
 
 *** Counsel etags
