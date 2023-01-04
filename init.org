@@ -1432,7 +1432,134 @@ A small utility package to fill the small gaps left by using filewatch-mode and 
 
 *** Ivy
 
+Setup [[https://github.com/abo-abo/swiper][ivy]].
+
+#+begin_src emacs-lisp
+(use-package ivy
+  :preface
+;;  (defun my/ivy/switch-buffer-occur ()
+;;    "Occur function for `ivy-switch-buffer' using `ibuffer'."
+;;    (ibuffer nil (buffer-name) (list (cons 'name ivy--old-re))))
+  :commands
+  (ivy-mode ivy-set-occur)
+  :custom
+  (ivy-count-format "%d/%d " "Show anzu-like counter")
+  :custom-face
+  ;; (ivy-current-match ((t (:inherit 'hl-line))))
+  ;; TODO: Make this theme-dependent (use :inherit)
+  (ivy-current-match ((t (:background "#333333" :foreground "#fff"))))
+  :init
+  (setq
+   ;; Enable bookmarks and recentf
+   ;; (add 'recentf-mode' and bookmarks to 'ivy-switch-buffer')
+   ivy-use-virtual-buffers t
+   ;; Display full buffer name
+   ivy-virtual-abbreviate 'full
+   ;; Number of result lines to display
+   ivy-height 12
+   ;; Current input becomes selectable as a candidate
+   ;; solves the issue of creating a file or
+   ;; a directory `foo` when a file `foobar` already exists
+   ;; another way is to use C-M-j
+   ivy-use-selectable-prompt t
+   ;; Wrap around ivy results
+   ivy-wrap t
+   ;; Omit ^ at the beginning of regexp
+   ivy-initial-inputs-alist nil)
+  :config
+  (ivy-mode 1)
+  ;; Enable fuzzy searching everywhere except:
+  ;; - Switching buffers with Ivy
+  ;; - Swiper
+  ;; - Counsel projectile (find-file)
+  (setq
+   ivy-re-builders-alist
+   '((swiper . ivy--regex-plus)
+     (swiper-isearch . regexp-quote)
+     (ivy-switch-buffer . ivy--regex-plus)
+     (counsel-projectile-find-file . ivy--regex-plus)))
+  ;;(ivy-set-occur 'ivy-switch-buffer 'my/ivy/switch-buffer-occur)
+  :bind
+  ("C-<tab>" . ivy-switch-buffer)
+  :diminish ivy-mode)
+
+(use-package ivy-prescient
+  :after counsel
+  :config
+  (ivy-prescient-mode 1)
+  ;; Remember candidate frequencies across sessions
+  (prescient-persist-mode 1))
+#+end_src
+
+*** Ivy posframe
+
+#+begin_src emacs-lisp
+(use-package ivy-posframe
+  :after (posframe ivy)
+  :config
+  (setq ivy-posframe-height-alist
+        '((swiper . 20)
+          (t. 20)))
+  (setq
+   ivy-posframe-display-functions-alist
+   '((swiper . nil)
+     (counsel-bookmark . ivy-posframe-display-at-frame-center)
+     (counsel-find-file . ivy-posframe-display-at-frame-center)
+     (counsel-git-grep . ivy-posframe-display-at-frame-center)
+     (counsel-package . ivy-posframe-display-at-frame-center)
+     (counsel-load-theme . ivy-posframe-display-at-frame-center)
+     (counsel-rg . ivy-posframe-display-at-frame-center)
+     (counsel-fzf . ivy-posframe-display-at-frame-center)
+     (counsel-imenu . ivy-posframe-display-at-frame-center)
+     (counsel-describe-variable . ivy-posframe-display-at-frame-center)
+     (counsel-describe-face . ivy-posframe-display-at-frame-center)
+     (counsel-describe-function . ivy-posframe-display-at-frame-center)
+     (counsel-unicode-char . ivy-posframe-display-at-frame-top-center)
+     (counsel-ace-link . ivy-posframe-display-at-frame-top-center)
+     (complete-symbol . ivy-posframe-display-at-point)
+     (counsel-M-x . ivy-posframe-display-at-frame-center)
+     (t . ivy-posframe-display)))
+  (ivy-posframe-mode 1))
+#+end_src
+
+Ivy icons
+
+#+begin_src emacs-lisp :tangle yes
+(use-package all-the-icons-ivy
+ :after (ivy projectile)
+ :commands
+ (all-the-icons-ivy-setup)
+ :custom
+ (all-the-icons-ivy-buffer-commands '() "Don't use for buffers.")
+ (all-the-icons-ivy-file-commands
+  '(counsel-find-file
+    counsel-file-jump
+    counsel-recentf
+    counsel-projectile-find-file
+    counsel-projectile-find-dir) "Prettify more commands.")
+ :config
+ (all-the-icons-ivy-setup))
+#+end_src
+
 **** Rich
+
+More friendly interface for ivy.
+Here is the [[https://github.com/Yevgnen/ivy-rich][package repo]].
+
+#+begin_src emacs-lisp
+(use-package ivy-rich
+ :after (ivy ivy-posframe)
+ :demand t
+ :commands
+ ivy-rich-mode
+ :init
+ (setq
+  ;; To abbreviate paths using abbreviate-file-name
+  ;; (e.g. replace “/home/username” with “~”)
+  ivy-rich-path-style 'abbrev)
+ :config
+ (ivy-rich-mode 1))
+#+end_src
 
 **** Xref
 
@@ -1451,6 +1578,18 @@ A small utility package to fill the small gaps left by using filewatch-mode and 
 *** Counsel etags
 
 *** Swiper
+
+Ivy-enhanced alternative to =isearch=.
+
+#+begin_src emacs-lisp
+(use-package swiper
+  :after general
+  :init
+  ;; Recenter after swiper is finished
+  (setq swiper-action-recenter t)
+  :bind
+  ("C-s" . swiper-isearch))
+#+end_src
 
 *** Dumb jump
 
@@ -1472,14 +1611,14 @@ https://projectile.readthedocs.io/en/latest/usage/
 
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
- ;; :after (general ivy)
+ :after (general ivy)
+ :demand t
  :commands
  projectile-mode
  :init
- ;; projectile requires this setting for ivy completion
  (setq
-  ;; projectile-indexing-method 'alien
-  ;; projectile-completion-system 'ivy
+  projectile-indexing-method 'alien
+  projectile-completion-system 'ivy
   ;; useful for very large projects
   projectile-enable-caching t
   projectile-sort-order 'recently-active
