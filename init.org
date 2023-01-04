@@ -817,6 +817,16 @@ See the [[https://github.com/rranelli/auto-package-update.el][package repo]] for
 
 *** Copy as
 
+*** Posframe
+
+Pop a [[https://github.com/tumashu/posframe][posframe]] (a child-frame) at point.
+
+#+begin_src emacs-lisp
+(use-package posframe
+  :custom
+  (posframe-mouse-banish nil))
+#+end_src
+
 *** Extra whitespace trimming
 
 Unobtrusively trim extraneous whitespace only in lines edited.
