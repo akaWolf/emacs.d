@@ -1212,6 +1212,11 @@ Mark uncommitted changes in the fringe.
    `(company-preview-common
      ((t (:foreground ,ac :background ,bg-lightest))))))
  :diminish company-mode)
+
+(use-package company-prescient
+  :after company
+  :config
+  (company-prescient-mode 1))
 #+END_SRC
 
 *** Company quickhelp
