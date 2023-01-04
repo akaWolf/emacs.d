@@ -1717,10 +1717,15 @@ Install [[libvterm][https://github.com/akermu/emacs-libvterm]].
 (use-package vterm
   :custom
   (vterm-buffer-name-string "vterm %s")
-  :init
-  (add-hook 'vterm-exit-functions
-    (lambda (buffer event)
-      (kill-buffer buffer))))
+  (vterm-kill-buffer-on-exit t)
+  (vterm-max-scrollback 100000)
+  :custom-face
+  (vterm-color-default ((t :inherit term)))
+;  :init
+;  (add-hook 'vterm-exit-functions
+;    (lambda (buffer event)
+;      (kill-buffer buffer)))
+)
 #+END_SRC
 
 ** Undo
