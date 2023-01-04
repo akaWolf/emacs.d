@@ -655,7 +655,7 @@ Advice setting ~:ensure nil~ for =use-package= + =quelpa=.
    'default nil
    :family (caar face-font-family-alternatives)
    :weight 'regular
-   :height 200
+   :height 100
    :width 'semi-condensed)
   (set-fontset-font
    "fontset-default"
