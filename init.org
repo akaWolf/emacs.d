@@ -2243,7 +2243,7 @@ Setup [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
 
 *** Company LSP
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package company-lsp
  :after (lsp-mode company)
  ;; :quelpa
