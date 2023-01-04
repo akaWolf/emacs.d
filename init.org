@@ -328,6 +328,20 @@ Using =reverse= naming method, buffers visiting the files =/u/rms/tmp/Makefile= 
 
 **** Prog mode
 
+Prettify symbols.
+
+#+begin_src emacs-lisp :tangle no
+(use-package prog-mode
+ :ensure nil
+ :commands
+ (global-prettify-symbols-mode)
+ :init
+ (setq prettify-symbols-unprettify-at-point 'right-edge)
+ :config
+ ;; convert certain words into symbols, e.g. lambda becomes λ.
+ (global-prettify-symbols-mode t))
+#+end_src
+
 **** IBuffer
 
 **** Mule
