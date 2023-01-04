@@ -2583,32 +2583,65 @@ Using https://github.com/microsoft/pyright
 =telega.el= is full featured unofficial client for Telegram platform for GNU Emacs.
 
 #+BEGIN_SRC emacs-lisp
-(use-package telega
- :requires
- (tracking)
- :config
- (telega-notifications-mode 1)
- (telega-mode-line-mode 1)
- (setq telega-chat-show-deleted-messages-for 'all)
- (setq telega-tdlib-min-version "1.5.0")
- :custom
- (telega-use-tracking-for 'all)
- (telega-chat-prompt-show-avatar-for 'nil)
- :custom-face
- (telega-entity-type-code ((t :family "Iosevka")))
- (telega-entity-type-pre ((t :family "Iosevka")))
- (telega-webpage-fixed ((t :family "Iosevka" :height 0.85)))
- :init
- (add-hook 'telega-chat-mode-hook
-   (lambda ()
-     (set
-       (make-local-variable 'company-backends)
-       (append '(telega-company-emoji
-                   telega-company-username
-                   telega-company-hashtag)
-               (when (and telega-chatbuf--chat (telega-chat-bot-p telega-chatbuf--chat))
-                     '(telega-company-botcmd))))
-     (company-mode 1))))
+  (use-package telega
+   :requires
+   (tracking)
+   :config
+   ;(telega-notifications-mode 1)
+   (telega-patrons-mode 0)
+   (telega-mode-line-mode 1)
+   (telega-appindicator-mode 1)
+   (setq telega-chat-show-deleted-messages-for 'all)
+   ;(setq telega-tdlib-min-version "1.5.0")
+   (defun my-watch-in-mpv (url)
+	 (async-shell-command (format "mpv -v %S" url)))
+   :custom
+   (telega-use-tracking-for 'all)
+   ;(telega-chat-prompt-show-avatar-for 'nil)
+   (telega-chat-prompt-format
+ 	   '((:eval
+       (telega-chatbuf-prompt-default-sender-avatar))
+      (:eval
+       (telega-chatbuf-prompt-body))
+      ;(:eval
+       ;(when
+        ;   (and telega-use-images
+         ;   (telega-chatbuf-match-p 'can-send-or-post))
+         ;(telega-chatbuf-prompt-chat-avatar)))
+      (:eval
+       (when
+           (and telega-auto-translate-mode telega-chatbuf-language-code telega-translate-to-language-by-default
+            (not
+             (equal telega-chatbuf-language-code telega-translate-to-language-by-default)))
+         (propertize
+          (format "[%s→%s]" telega-translate-to-language-by-default telega-chatbuf-language-code)
+          'face 'shadow)))
+      ">> "))
+   ;(telega-chat-use-markdown-version 'nil)
+   (telega-chat-input-markups '(nil "markdown2" "org"))
+   (telega-chat-ret-always-sends-message 't)
+   (telega-open-file-function 'org-open-file)
+   (telega-online-status-function (lambda () 't))
+   (telega-browse-url-alist
+	   '(("https?://\\(www\\.\\)?youtube.com/watch" . my-watch-in-mpv)
+	   ("https?://youtu.be/" . my-watch-in-mpv)))
+   :custom-face
+   (telega-entity-type-code ((t :family "Iosevka" :height 0.85)))
+   (telega-entity-type-pre ((t :family "Iosevka" :height 0.85)))
+   (telega-webpage-fixed ((t :family "Iosevka" :height 0.85)))
+   :bind-keymap
+   ("C-c t" . telega-prefix-map)
+   :init
+   (add-hook 'telega-chat-mode-hook
+	 (lambda ()
+	   (set
+		 (make-local-variable 'company-backends)
+		 (append '(telega-company-emoji
+					 telega-company-username
+					 telega-company-hashtag)
+				 (when (and telega-chatbuf--chat (telega-chat-bot-p telega-chatbuf--chat))
+					   '(telega-company-botcmd))))
+	   (company-mode 1))))
 #+END_SRC
 
 ** Pomodoro
