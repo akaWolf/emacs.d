@@ -782,6 +782,13 @@ used here since load-theme call overwrite cursor color value.
 
 ** Key bindings
 
+*** General package
+
+There should be keybinding congiguration
+#+begin_src emacs-lisp
+(use-package general)
+#+end_src
+
 ** Behavior
 *** Trashing
 
