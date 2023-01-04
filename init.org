@@ -394,6 +394,27 @@ Disable mandatory parameter to =term= function.
 #+BEGIN_SRC emacs-lisp
 (use-package term
  :ensure nil
+ :custom-face
+;; dark theme
+;; (term ((t :inherit default :background "black" :foreground "white")))
+;; (term-color-black ((t :foreground "gray" :background "gray")))
+;; (term-color-red ((t :foreground "red" :background "red")))
+;; (term-color-green ((t :foreground "green" :background "green")))
+;; (term-color-yellow ((t :foreground "yellow" :background "yellow")))
+;; (term-color-blue ((t :foreground "blue" :background "blue")))
+;; (term-color-magenta ((t :foreground "magenta" :background "magenta")))
+;; (term-color-cyan ((t :foreground "cyan" :background "cyan")))
+;; (term-color-white ((t :foreground "white" :background "white")))
+;; gray80 theme
+ (term ((t :inherit default :background "gray80" :foreground "black")))
+ (term-color-black ((t :foreground "gray80" :background "gray15")))
+ (term-color-red ((t :foreground "red3" :background "red3")))
+ (term-color-green ((t :foreground "green4" :background "green4")))
+ (term-color-yellow ((t :foreground "yellow4" :background "yellow4")))
+ (term-color-blue ((t :foreground "blue3" :background "blue3")))
+ (term-color-magenta ((t :foreground "magenta4" :background "magenta4")))
+ (term-color-cyan ((t :foreground "cyan4" :background "cyan4")))
+ (term-color-white ((t :foreground "white" :background "white")))
  :config
  (fset 'origterm
   (symbol-function 'term))
