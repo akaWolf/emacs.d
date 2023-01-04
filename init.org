@@ -2172,9 +2172,15 @@ Setup [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
  :commands (lsp)
  :init
  ;; Uncomment to inspect communication between client and the server
- (setq lsp-print-io t)
- (setq lsp-prefer-flymake nil)
- :delight "lsp")
+ (setq lsp-log-io t)
+ :config
+ (lsp-enable-which-key-integration t)
+ :delight "lsp"
+ :bind-keymap
+ ("M-]" . lsp-command-map)
+ :bind
+ ("<f2>" . lsp-find-definition)
+ ("<f1>" . lsp-find-references))
 #+END_SRC
 
 *** LSP UI
