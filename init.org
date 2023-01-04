@@ -1044,6 +1044,7 @@ Mood-line [[https://github.com/TatriX/good-line][fork]].
 
 #+BEGIN_SRC emacs-lisp
 (use-package good-line
+ :ensure nil
  :hook
  (after-init . good-line-mode)
  :quelpa (good-line :fetcher github :repo "TatriX/good-line"))
