@@ -274,10 +274,14 @@ Enable and diminish [[https://www.gnu.org/software/emacs/manual/html_node/emacs/
 Emacs bindings.
 
 #+BEGIN_SRC emacs-lisp
+(use-package char-fold
+  :custom
+  (char-fold-symmetric t)
+  (search-default-mode #'char-fold-to-regexp))
 (use-package reverse-im
   :ensure t
   :demand t
-;;  :after char-fold
+  :after char-fold
   :bind
   ("M-T" . reverse-im-translate-word)
   :custom
