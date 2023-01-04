@@ -619,7 +619,7 @@ Setup [[https://framagit.org/steckerhalter/quelpa][quelpa]].
   ;; (quelpa-self-upgrade)
 
   (with-temp-buffer
-    (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
+    (url-insert-file-contents "https://github.com/quelpa/quelpa/raw/master/quelpa.el")
     (eval-buffer)))
 #+END_SRC
 
