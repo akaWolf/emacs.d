@@ -1667,7 +1667,7 @@ https://projectile.readthedocs.io/en/latest/usage/
     "*.jar" "*.tar.gz" "*.tgz" "*.zip" "package-lock.json"))
  :config
  ;; use projectile everywhere
- (projectile-mode)
+ (projectile-mode 1)
  ;; remove the mode name for projectile-mode, but show the project name
  ;; :delight '(:eval (concat " " (projectile-project-name)))
  :bind-keymap
