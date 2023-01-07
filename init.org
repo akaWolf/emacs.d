@@ -1251,7 +1251,7 @@ This only works with the =company-capf= backend.
 
 ** Flycheck
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package flycheck
   :after (general)
   :demand t
