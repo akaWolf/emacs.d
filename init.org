@@ -183,7 +183,7 @@ Enable =recentf-mode= and remember a lot of files.
 (setq
  recentf-auto-cleanup 'never
  recentf-max-menu-items 0
- recentf-max-saved-items 300
+ recentf-max-saved-items 1000
  recentf-filename-handlers '(file-truename abbreviate-file-name))
 
 (recentf-mode 1)
@@ -194,7 +194,7 @@ Automatically save place in each file.
 #+BEGIN_SRC emacs-lisp
 (setq
  save-place-forget-unreadable-files t
- save-place-limit 200)
+ save-place-limit 1000)
 
 (save-place-mode 1)
 #+END_SRC
