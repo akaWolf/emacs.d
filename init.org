@@ -1434,7 +1434,7 @@ A small utility package to fill the small gaps left by using filewatch-mode and 
 
 Setup [[https://github.com/abo-abo/swiper][ivy]].
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package ivy
   :preface
 ;;  (defun my/ivy/switch-buffer-occur ()
@@ -1482,7 +1482,11 @@ Setup [[https://github.com/abo-abo/swiper][ivy]].
   :bind
   ("C-<tab>" . ivy-switch-buffer)
   :diminish ivy-mode)
+#+end_src
 
+*** Ivy prescient
+
+#+begin_src emacs-lisp :tangle no
 (use-package ivy-prescient
   :after counsel
   :config
@@ -1493,7 +1497,7 @@ Setup [[https://github.com/abo-abo/swiper][ivy]].
 
 *** Ivy posframe
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package ivy-posframe
   :after (posframe ivy)
   :config
@@ -1524,7 +1528,7 @@ Setup [[https://github.com/abo-abo/swiper][ivy]].
 
 Ivy icons
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp :tangle no
 (use-package all-the-icons-ivy
  :after (ivy projectile)
  :commands
@@ -1546,7 +1550,7 @@ Ivy icons
 More friendly interface for ivy.
 Here is the [[https://github.com/Yevgnen/ivy-rich][package repo]].
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package ivy-rich
  :after (ivy ivy-posframe)
  :demand t
@@ -1571,13 +1575,13 @@ Here is the [[https://github.com/Yevgnen/ivy-rich][package repo]].
 
 *** FZF
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package fzf)
 #+end_src
 
 *** Counsel
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package counsel
  :after general
  ;;:demand t
@@ -1600,7 +1604,7 @@ Here is the [[https://github.com/Yevgnen/ivy-rich][package repo]].
 
 Ivy-enhanced alternative to =isearch=.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package swiper
   :after general
   :init
@@ -1630,14 +1634,14 @@ https://projectile.readthedocs.io/en/latest/usage/
 
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
- :after (general ivy)
+ ;:after (general ivy)
  :demand t
  :commands
  projectile-mode
  :init
  (setq
   projectile-indexing-method 'alien
-  projectile-completion-system 'ivy
+  ;projectile-completion-system 'ivy
   ;; useful for very large projects
   projectile-enable-caching t
   projectile-sort-order 'recently-active
