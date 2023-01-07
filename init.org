@@ -1038,11 +1038,11 @@ See the [[https://github.com/tarsius/hl-todo][package repository]] for more info
 
 *** Mode line
 
-**** Good-line (active)
+**** Good-line (disabled)
 
 Mood-line [[https://github.com/TatriX/good-line][fork]].
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package good-line
  :ensure nil
  :hook
@@ -1055,7 +1055,7 @@ Mood-line [[https://github.com/TatriX/good-line][fork]].
 A minimal mode-line configuration that aims to replicate some of the features of
 the =doom-modeline= package.
 
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package mood-line
  :hook
  (after-init . mood-line-mode))
