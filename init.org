@@ -350,16 +350,20 @@ Many editors (e.g. Vim) have the feature of saving minibuffer history to an exte
 
 Prettify symbols.
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle yes
 (use-package prog-mode
  :ensure nil
  :commands
  (global-prettify-symbols-mode)
  :init
  (setq prettify-symbols-unprettify-at-point 'right-edge)
+ :hook
+ (prog-mode .
+  (lambda () (local-set-key (kbd "M-o") #'comment-or-uncomment-region)))
  :config
  ;; convert certain words into symbols, e.g. lambda becomes λ.
- (global-prettify-symbols-mode t))
+ ;(global-prettify-symbols-mode t)
+)
 #+end_src
 
 **** IBuffer
