@@ -320,6 +320,26 @@ Using =reverse= naming method, buffers visiting the files =/u/rms/tmp/Makefile= 
  ("C-z" . nil))
 #+END_SRC
 
+**** savehist
+
+Many editors (e.g. Vim) have the feature of saving minibuffer history to an external file after exit. This package provides the same feature in Emacs. When set up, it saves recorded minibuffer histories to a file (~/.emacs-history bydefault). Vertico sorts by history position.
+
+#+BEGIN_SRC emacs-lisp
+(use-package savehist
+  :ensure nil
+  :custom
+  (savehist-additional-variables
+   '(kill-ring
+     ;; search entries
+     search-ring
+     regexp-search-ring))
+  ;; save every minute
+  (savehist-autosave-interval 60)
+  (savehist-save-minibuffer-history t)
+  :init
+  (savehist-mode))
+#+END_SRC
+
 **** Delsel
 
 **** Simple
@@ -1744,16 +1764,6 @@ Vertico [[https://github.com/tumashu/vertico-posframe][extension]], which lets v
 (use-package vertico-posframe
   :after (vertico posframe)
   :config (vertico-posframe-mode 1))
-#+END_SRC
-
-*** savehist
-
-Persist history over Emacs restarts. Vertico sorts by history position.
-
-#+BEGIN_SRC emacs-lisp
-(use-package savehist
-  :init
-  (savehist-mode))
 #+END_SRC
 
 *** Orderless
