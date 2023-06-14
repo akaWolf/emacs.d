@@ -626,6 +626,19 @@ Disable special glyph for non-ASCII spaces.
 
 ** Benchmarking
 
+Usage:
+
+- ~M-x benchmark-init/show-durations-tabulated~
+– ~M-x benchmark-init/show-durations-tree~
+
+#+begin_src emacs-lisp :tangle no
+;; Disabled, see: https://github.com/dholm/benchmark-init-el/issues/15
+(use-package benchmark-init
+ :hook
+ ;; To disable collection of benchmark data after init is done.
+ (after-init . benchmark-init/deactivate))
+#+end_src
+
 ** Quelpa
 
 Setup [[https://framagit.org/steckerhalter/quelpa][quelpa]].
