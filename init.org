@@ -2852,30 +2852,31 @@ Use the Debug Adapter Protocol for running tests and debugging.
    (telega-appindicator-mode 1)
    (setq telega-chat-show-deleted-messages-for 'all)
    ;(setq telega-tdlib-min-version "1.5.0")
+   (setq telega-translate-to-language-by-default "ru")
    (defun my-watch-in-mpv (url)
 	 (async-shell-command (format "mpv -v %S" url)))
    :custom
    (telega-use-tracking-for 'all)
    ;(telega-chat-prompt-show-avatar-for 'nil)
    (telega-chat-prompt-format
- 	   '((:eval
-       (telega-chatbuf-prompt-default-sender-avatar))
-      (:eval
-       (telega-chatbuf-prompt-body))
-      ;(:eval
-       ;(when
-        ;   (and telega-use-images
-         ;   (telega-chatbuf-match-p 'can-send-or-post))
-         ;(telega-chatbuf-prompt-chat-avatar)))
-      (:eval
-       (when
-           (and telega-auto-translate-mode telega-chatbuf-language-code telega-translate-to-language-by-default
-            (not
-             (equal telega-chatbuf-language-code telega-translate-to-language-by-default)))
-         (propertize
-          (format "[%s→%s]" telega-translate-to-language-by-default telega-chatbuf-language-code)
-          'face 'shadow)))
-      ">> "))
+		'((:eval
+	   (telega-chatbuf-prompt-default-sender-avatar))
+	  (:eval
+	   (telega-chatbuf-prompt-body))
+	  ;(:eval
+	   ;(when
+		;   (and telega-use-images
+		 ;   (telega-chatbuf-match-p 'can-send-or-post))
+		 ;(telega-chatbuf-prompt-chat-avatar)))
+	  (:eval
+	   (when
+		   (and telega-auto-translate-mode telega-chatbuf-language-code telega-translate-to-language-by-default
+			(not
+			 (equal telega-chatbuf-language-code telega-translate-to-language-by-default)))
+		 (propertize
+		  (format "[%s→%s]" telega-translate-to-language-by-default telega-chatbuf-language-code)
+		  'face 'shadow)))
+	  ">> "))
    ;(telega-chat-use-markdown-version 'nil)
    (telega-chat-input-markups '(nil "markdown2" "org"))
    (telega-chat-ret-always-sends-message 't)
