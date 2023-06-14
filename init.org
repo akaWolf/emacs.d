@@ -2297,7 +2297,7 @@ Paste links from clipboard and automatically fetch title.
 
 *** Pandoc exporter
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package ox-pandoc)
 #+end_src
 
