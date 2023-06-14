@@ -612,10 +612,10 @@ Enable automatic line breaking for all text mode buffers.
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 #+END_SRC
 
-Always wrap lines.
+Always wrap lines. When enabled lines will be wrapped by words
 
-#+BEGIN_SRC emacs-lisp :tangle no
-;; (global-visual-line-mode)
+#+BEGIN_SRC emacs-lisp :tangle yes
+(global-visual-line-mode -1)
 #+END_SRC
 
 Disable special glyph for non-ASCII spaces.
