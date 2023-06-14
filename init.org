@@ -608,7 +608,7 @@ Break line at =N= characters.
 
 Enable automatic line breaking for all text mode buffers.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 #+END_SRC
 
