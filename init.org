@@ -566,7 +566,7 @@ Some basic things.
 (setq
  sentence-end-double-space nil  ; sentences should end in one space
  initial-scratch-message nil    ; empty scratch buffer
- enable-recursive-minibuffers t ; allow minibuffer commands in the minibuffer
+ enable-recursive-minibuffers nil ; disallow minibuffer commands in the minibuffer
  echo-keystrokes 0.1            ; show keystrokes right away, don't show the message in the scratch buffer
  ns-use-native-fullscreen nil   ; disable native fullscreen support
 )
