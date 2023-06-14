@@ -2402,15 +2402,19 @@ Setup [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
  :commands (lsp)
  :init
  ;; Uncomment to inspect communication between client and the server
- (setq lsp-log-io t)
+ ;(setq lsp-log-io t)
  :config
  (lsp-enable-which-key-integration t)
+ ; https://emacs-lsp.github.io/lsp-mode/page/file-watchers/
+ (setq lsp-file-watch-threshold 3000)
+ (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\venv\\'")
+ (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")
  :delight "lsp"
  :bind-keymap
  ("M-]" . lsp-command-map)
  :bind
- ("<f2>" . lsp-find-definition)
- ("<f1>" . lsp-find-references))
+ ("<f1>" . lsp-find-references)
+ ("<f2>" . lsp-find-definition))
 #+END_SRC
 
 *** LSP UI
@@ -2472,6 +2476,8 @@ Setup [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
 #+END_SRC
 
 *** Company LSP
+
+`company-lsp` is not supported anymore, using `company-capf` as the `lsp-completion-provider`.
 
 #+BEGIN_SRC emacs-lisp :tangle no
 (use-package company-lsp
