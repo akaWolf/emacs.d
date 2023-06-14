@@ -2771,6 +2771,29 @@ Using https://github.com/microsoft/pyright
 
 ** DAP
 
+Use the Debug Adapter Protocol for running tests and debugging.
+
+#+begin_src emacs-lisp
+(use-package dap-mode
+  :config
+  ;(require 'dap-cpptools)
+  ;(dap-mode 1)
+  ;(dap-ui-mode 1)
+  ;(add-hook 'dap-stopped-hook
+  ;  (lambda (arg) (call-interactively #'dap-hydra)))
+  :bind
+  ("<f5>" . dap-debug) ; Start or continue debugging
+  ("<S-f5>" . dap-disconnect) ; Exit debugger
+  ("<f10>" . dap-next) ; Step over
+  ("<f11>" . dap-step-in) ; Step into
+  ("<S-f11>" . dap-step-out) ; Step out
+  ("<f9>" . dap-breakpoint-add) ; Set or remove breakpoint
+  ("<C-f9>" . dap-breakpoint-toggle) ; Enable or disable breakpoint
+  :hook
+  (lsp-mode . dap-mode)
+  (lsp-mode . dap-ui-mode))
+#+end_src
+
 ** HTTP
 
 ** Docker
