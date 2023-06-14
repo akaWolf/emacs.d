@@ -593,10 +593,10 @@ Display line and column numbers in the mode-line.
 
 *** Line wrapping
 
-Long lines will show a continuation character in the right margin at the
-window’s edge to indicate that next line is the continuation of current.
+Long lines will show a continuation character in the right margin at the window’s edge to indicate that next line is the continuation of current. Long lines will show a continuation character in the right margin at the window’s edge to indicate that next line is the continuation of current.
+When non-nil line will be displayed with continuation.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (setq-default truncate-lines nil)
 #+END_SRC
 
